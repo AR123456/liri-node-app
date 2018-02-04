@@ -15,16 +15,18 @@ var client = new Twitter({
   });
    
   var params = {screen_name: 'nodejs'};
-  client.get('search/tweets', {q: 'node.js'}, function(error, tweets, response) {
+  client.get('statuses/user_timeline', {q: 'node.js'}, function(error, tweets, response) {
     if (!error) {
-    //   console.log(tweets);
-      //show the last 20 tweets and when created 
+    // console.log(tweets);
+     for (var i = 0; i < tweets.length; i++) {
+             //show the last 20 tweets and when created 
         // do something with data 
-        // console.log(JSON.stringify(response, null, 2));
-        // console.log(JSON.stringify(response.body, null, 2));
-        // console.log(tweets.created_at);
-        // console.log(tweets.text);
-
+        console.log(tweets[i].created_at);
+        console.log(tweets[i].text);
        
+     }
+      
+    } else{
+      console.log(error);
     }
   });
