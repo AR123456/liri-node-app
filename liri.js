@@ -4,6 +4,8 @@ var request = require("request");
 var fs = require("fs");
 // Load the inquirer pacakge
 var inquirer = require("inquirer");
+//twitter
+var Twitter = require('twitter');
 
 //this will take the user input for movie until i get inquire working 
 
