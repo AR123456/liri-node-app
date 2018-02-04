@@ -21,7 +21,10 @@ var client = new Twitter({
       //show the last 20 tweets and when created 
         // do something with data 
         // console.log(JSON.stringify(response, null, 2));
-        console.log(JSON.stringify(response.body, null, 2));
+        // console.log(JSON.stringify(response.body, null, 2));
+        // console.log(tweets.created_at);
+        // console.log(tweets.text);
+
        
     }
   });

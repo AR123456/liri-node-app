@@ -28,14 +28,22 @@ var spotify = new Spotify({
   secret: 'f7e36e90658b48d4bc74ac7838ba29a9'
 });
 
-spotify.search({ type: 'track', query: songName,limit:"20" }, function(err, data) {
+spotify.search({ type: 'track', query: songName, }, function(err, data) {
     if (err) {
       return console.log('Error occurred: ' + err);
       return;
     }
     //    console.log(data);
     //  console.log(data.tracks.items[0]);
-         console.log(data.tracks.items[0].artists); 
+    //artist name
+         console.log(data.tracks.items[0].artists[0].name); 
+     //song name     
+         console.log(data.tracks.items[0].name); 
+      //album name 
+         console.log(data.tracks.items[0].album.name);
+      //external url  
+         console.log(data.tracks.items[0].external_urls.spotify); 
+          
     
  
 
