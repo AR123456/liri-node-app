@@ -2,11 +2,10 @@
 var request = require("request");
 // Load the fs package to read and write
 var fs = require("fs");
-
 // Load the inquirer pacakge
 var inquirer = require("inquirer");
 
-//this will take the user input for movie untill i get inquire working 
+//this will take the user input for movie until i get inquire working 
 
 var action = user.whichAction//from the which action list 
 
