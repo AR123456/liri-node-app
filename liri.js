@@ -1,4 +1,5 @@
 //required 
+
 var request = require("request");
 // Load the fs package to read and write
 var fs = require("fs");
@@ -49,13 +50,8 @@ switch (action) {
       }
    ]).then(function(inquirerResponse){
       //  console.log("yep");
-                  
-            var client = new Twitter({
-              consumer_key: 'ACaLflkZ0Gx8qfcEO2zPb56JK',
-              consumer_secret: '89So669hTLboZhVLxKlXkAfPAz4bJlzGvsosS1hPZWLh6uO3Xs',
-              access_token_key: '959538956932071424-9gxgNgcrxqx0HZSzGVCdvzyPckjMUM3',
-              access_token_secret: '3H3Dm4I11Da1165aMqA1PN0lx3fUm1YMxFIECqc72eoAP'
-            });
+            //link to keys       
+            var client = new Twitter(require("./keys.js").twitterKeys);
             
             var params = {screen_name: 'nodejs'};
             client.get('statuses/user_timeline', {q: 'node.js'}, function(error, tweets, response) {
