@@ -158,7 +158,66 @@ switch (action) {
 
   function  doWhat(){
     if (action ="do-what-it-says") {
-      console.log("you are in the doWhat function")
+      // console.log("you are in the doWhat function")
+      fs.readFile("./random.txt", "utf8", function(error, data) {
+        if (error) {
+          return console.log(error);
+        }    
+          //  split it by commas 
+        var dataArray = data.split(",");
+         //get data from array
+        // console.log(dataArray);
+        if (dataArray[0]="spotify-this-song" ) {
+         //keys replace with call to file 
+          var spotify = new Spotify({
+            id: '32bf67364ca74add92adac229ad286a3',
+            secret: 'f7e36e90658b48d4bc74ac7838ba29a9'
+              });
+           spotify.search({ type: 'track', query: dataArray[1], }, function(err, data) {
+            if (err) {
+              return console.log('Error occurred: ' + err);
+              return;
+            }
+            //artist name
+                console.log(data.tracks.items[0].artists[0].name); 
+            //song name     
+                console.log(data.tracks.items[0].name); 
+              //album name 
+                console.log(data.tracks.items[0].album.name);
+              //external url  
+                console.log(data.tracks.items[0].external_urls.spotify); 
+              }); 
+
+          }
+        // if (dataArray[0]="movie-this") {
+        //   var queryUrl = "http://www.omdbapi.com/?t=" + dataArray[1] + "&y=&plot=short&apikey=trilogy";
+        //   // This line is just to help us debug against the actual URL.
+        //   console.log(queryUrl);
+        //   request(queryUrl, function(error, response, body) {
+        //     // If the request is successful
+        //     if (!error && response.statusCode === 200) {
+        //       // Parse the body of the site and recover just the imdbRating
+        //       // (Note: The syntax below for parsing isn't obvious. Just spend a few moments dissecting it).
+        //       console.log("Release Year: " + JSON.parse(body).Year);
+        //       console.log("Release Year: " + JSON.parse(body).Year);
+        //       console.log("Title: " + JSON.parse(body).Title);
+        //       console.log("IMDB Rating of this movie: " + JSON.parse(body).Rated);
+        //       console.log("Rotten Tomatoes Rating: " + JSON.parse(body).tomatoRating);
+        //       console.log("Country producing movie: " + JSON.parse(body).Country);
+        //       console.log("Language of the movie: " + JSON.parse(body).Language);
+        //       console.log("Plot " + JSON.parse(body).Plot);
+        //       console.log("Actors in the movie: " + JSON.parse(body).Actors);
+        //     }
+        //   });
+          
+        // } 
+        // //end of movie if 
+    
+    
+      });
+    
+  
+//******end of the very first do what if if  */
       }
     };
 
