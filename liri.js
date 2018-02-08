@@ -13,6 +13,15 @@ var Spotify = require('node-spotify-api');
 //users choice of my-tweets spotify-this-song  movie-ths do-wht-it-says.
 var action = process.argv[2];
 
+inquirer.prompt([{
+  type: "list",
+  name:"wantToWhat",
+  message:"Pick what you would like to try",
+  choices: ["my-tweets","spotify-this-song","movie-this","do-what-it-says"]
+}]).then(function(answers){
+   var action = (answers.wantToWhat);
+   console.log(action);
+
 switch (action) {
   case "my-tweets":
    myTweets();
@@ -30,12 +39,13 @@ switch (action) {
     doWhat();
     break;
 }
+})
 
 
 // functions 
   function myTweets() {
-    if (action="my-tweets") {
-      // console.log("you are in the myTweets function")
+    // if (action="my-tweets") {
+      console.log("you are in the myTweets function")
     inquirer.prompt([
       {
         type: "input",
@@ -70,7 +80,7 @@ switch (action) {
             });
     });//this is the end ot the inquier ".then"
 
-    }
+    // }
       };
       
   function  spotifySong(){    
@@ -133,6 +143,8 @@ switch (action) {
             // This line is just to help us debug against the actual URL.
             console.log(queryUrl);
             request(queryUrl, function(error, response, body) {
+              console.log(body);
+              
               // If the request is successful
               if (!error && response.statusCode === 200) {
                 // Parse the body of the site and recover just the imdbRating
@@ -141,7 +153,7 @@ switch (action) {
                 console.log("Release Year: " + JSON.parse(body).Year);
                 console.log("Title: " + JSON.parse(body).Title);
                 console.log("IMDB Rating of this movie: " + JSON.parse(body).Rated);
-                console.log("Rotten Tomatoes Rating: " + JSON.parse(body).tomatoRating);
+                console.log("Rotten Tomatoes Rating: " + JSON.parse(body).Ratings[1].Value);
                 console.log("Country producing movie: " + JSON.parse(body).Country);
                 console.log("Language of the movie: " + JSON.parse(body).Language);
                 console.log("Plot " + JSON.parse(body).Plot);
@@ -185,30 +197,7 @@ switch (action) {
               }); 
 
           }
-        // if (dataArray[0]="movie-this") {
-        //   var queryUrl = "http://www.omdbapi.com/?t=" + dataArray[1] + "&y=&plot=short&apikey=trilogy";
-        //   // This line is just to help us debug against the actual URL.
-        //   console.log(queryUrl);
-        //   request(queryUrl, function(error, response, body) {
-        //     // If the request is successful
-        //     if (!error && response.statusCode === 200) {
-        //       // Parse the body of the site and recover just the imdbRating
-        //       // (Note: The syntax below for parsing isn't obvious. Just spend a few moments dissecting it).
-        //       console.log("Release Year: " + JSON.parse(body).Year);
-        //       console.log("Release Year: " + JSON.parse(body).Year);
-        //       console.log("Title: " + JSON.parse(body).Title);
-        //       console.log("IMDB Rating of this movie: " + JSON.parse(body).Rated);
-        //       console.log("Rotten Tomatoes Rating: " + JSON.parse(body).tomatoRating);
-        //       console.log("Country producing movie: " + JSON.parse(body).Country);
-        //       console.log("Language of the movie: " + JSON.parse(body).Language);
-        //       console.log("Plot " + JSON.parse(body).Plot);
-        //       console.log("Actors in the movie: " + JSON.parse(body).Actors);
-        //     }
-        //   });
-          
-        // } 
-        // //end of movie if 
-    
+ 
     
       });
     
@@ -217,55 +206,3 @@ switch (action) {
       }
     };
 
-
-
-
-
-// inquirer.prompt([
-//   {
-//     type: "input",
-//     name: "name",
-//     message: "What is your name?"
-//   },
-//   {
-//     type: "list",
-//     name: "whichAction",
-//     message: "What can LIRI do for you today?",
-//     choices: ["my-tweets", "spotify-this-song", "movie-this","do-what-it-says"]
-//   },
-// ]).then(function(user){
-//switch cases 
-// switch (user) {
-//     //my-tweets
-//     case "my-tweets":
-//       myTweets();
-//       break;
-//     //spotify-this-song
-//     case "spotify-this-song":
-//       spotifySong();
-//       break;
-//     //movie-this
-//     case "movie-this":
-//      movieThis();
-//       break;
-//     //do-what-it-says
-//     case "do-what-it-says":
-//       doWhat();
-//       break;
-// //   }
-// if (user.whichAction = "my-tweets") {
-//   myTweets();
-  
-// } else if (user.whichAction = "spotify-this-song") {
-//   spotifySong()
-  
-// } else if (user.whichAction = "movie-this") {
-//   movieThis()
-  
-// } 
-//  else {
-//     doWhat()
-  
-// } 
-// 
-//});//this is the end ot the inquier ".then"
