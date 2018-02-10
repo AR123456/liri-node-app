@@ -84,12 +84,20 @@ function myTweets() {
             );
             console.log(tweets[i].created_at);
             console.log(tweets[i].text);
+            fs.appendFile("log.txt","\n" +tweets[i].text + "\n" +tweets[i].created_at + "\n" , "utf8", function(err) {
+              if (err) {
+                return console.log(err);
+              }
+         
+            }); 
           }
+
         } else {
           console.log(error);
         }
       });
     }); //this is the end ot the inquier ".then"
+  
 }
 function spotifySong() {
     // console.log("you are in the spotify Song function")
@@ -121,6 +129,15 @@ function spotifySong() {
           console.log(data.tracks.items[0].album.name);
           //external url
           console.log(data.tracks.items[0].external_urls.spotify);
+          
+          fs.appendFile("log.txt","\n" +data.tracks.items[0].artists[0].name + "\n" +data.tracks.items[0].name + "\n" +data.tracks.items[0].album.name + "\n"  +data.tracks.items[0].external_urls.spotify + "\n" , "utf8", function(err) {
+            if (err) {
+              return console.log(err);
+            }
+                  
+          }); 
+
+
         });
       }); //this is the end ot the inquier ".then"
 }
@@ -134,23 +151,27 @@ function movieThis() {
         }
       ])
       .then(function(inquirerResponse) {
+        if (!inquirerResponse.moviename) {
+        //  console.log("inquire response :  "+inquirerResponse.moviename);
+          movieRes= "Mr Nobody";
+        //  console.log (movieRes);
+        }
         var movieRes = inquirerResponse.moviename;
-        var movieName = "";
-        // console.log("The var moviename is:  "+movieRes);
-        var movieName = movieRes.split();
+        // var movieName = "";
+        
+        // var movieName = movieRes.split();
         // Then run a request to the OMDB API with the movie specified
         var queryUrl =
           "http://www.omdbapi.com/?t=" +
-          movieName +
+          movieRes +
           "&y=&plot=short&apikey=trilogy";
-        // This line is just to help us debug against the actual URL.
-        console.log(queryUrl);
+        //debug url 
+        // console.log(queryUrl);
         request(queryUrl, function(error, response, body) {
-        // console.log(body);
+      //  console.log(body);
           // If the request is successful
           if (!error && response.statusCode === 200) {
             // Parse the body of the site and recover just the imdbRating
-            console.log("Release Year: " + JSON.parse(body).Year);
             console.log("Release Year: " + JSON.parse(body).Year);
             console.log("Title: " + JSON.parse(body).Title);
             console.log("IMDB Rating of this movie: " + JSON.parse(body).Rated);
@@ -159,7 +180,26 @@ function movieThis() {
             console.log("Language of the movie: " + JSON.parse(body).Language);
             console.log("Plot " + JSON.parse(body).Plot);
             console.log("Actors in the movie: " + JSON.parse(body).Actors);
+                      
+          fs.appendFile("log.txt",
+            "\n" +"Release Year: " + JSON.parse(body).Year +
+            "\n" +"Title: " + JSON.parse(body).Title +
+            "\n" +"IMDB Rating of this movie: " + JSON.parse(body).Rated + 
+            "\n"  +"Rotten Tomatoes Rating: " + JSON.parse(body).Ratings[1].Value+ 
+            "\n"  +"Country producing movie: " + JSON.parse(body).Country + 
+            "\n"  +"Language of the movie: " + JSON.parse(body).Language + 
+            "\n"  +"Plot " + JSON.parse(body).Plot + 
+            "\n"  +"Actors in the movie: " + JSON.parse(body).Actors + 
+            "\n" , "utf8", function(err) {
+            if (err) {
+              return console.log(err);
+            }
+                  
+          }); 
+
+
           }
+            
         });
       }); //this is the end ot the inquier ".then"
 }
