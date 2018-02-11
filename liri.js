@@ -1,11 +1,9 @@
 //required
-
 var request = require("request");
 // Load the fs package to read and write
 var fs = require("fs");
 // Load the inquirer pacakge
 var inquirer = require("inquirer");
-//this will take the user input for movie untill i get inquire working
 //twitter
 var Twitter = require("twitter");
 //spotify
@@ -18,7 +16,6 @@ var spotify = new Spotify({
   id: "32bf67364ca74add92adac229ad286a3",
   secret: "f7e36e90658b48d4bc74ac7838ba29a9"
 });
-
 inquirer.prompt([
     {
       type: "list",
@@ -53,10 +50,8 @@ inquirer.prompt([
         break;
     }
   });
-
 // functions
 function myTweets() {
-  // console.log("you are in the myTweets function");
   inquirer
     .prompt([
       {
@@ -73,12 +68,10 @@ function myTweets() {
     ])
     .then(function(inquirerResponse) {
       var params = { screen_name: "nodejs" };
-      client.get("statuses/user_timeline", { q: "node.js" }, function(error,tweets,response) {
+      client.get("statuses/user_timeline", { count: 20 }, function(error,tweets,response) {
         if (!error) {
-          // console.log(tweets);
-          for (var i = 0; i < tweets.length; i++) {
-            //show the last 20 tweets and when created
-            // do something with data
+                  for (var i = 0; i < tweets.length; i++) {
+            //show tweets and when created
             console.log(
               "____________________________________________________"
             );
@@ -88,20 +81,16 @@ function myTweets() {
               if (err) {
                 return console.log(err);
               }
-         
             }); 
           }
-
         } else {
           console.log(error);
         }
       });
-    }); //this is the end ot the inquier ".then"
-  
-}
+    }); 
+  }
 function spotifySong() {
-    // console.log("you are in the spotify Song function")
-    inquirer.prompt([
+     inquirer.prompt([
         {
           type: "input",
           name: "songname",
@@ -110,9 +99,7 @@ function spotifySong() {
       ]).then(function(inquirerResponse) { 
         var songRes = inquirerResponse.songname;
         var songName = "";
-        // console.log("song res "+ songRes);
         var songName = songRes.split();
-        // console.log("song res "+ songName);
         //build url
         spotify.search({ type: "track", query: songName }, function(err, data) {
           if (err) {
@@ -120,7 +107,6 @@ function spotifySong() {
             return;
           }
           //    console.log(data);
-          //  console.log(data.tracks.items[0]);
           //artist name
           console.log(data.tracks.items[0].artists[0].name);
           //song name
@@ -129,18 +115,15 @@ function spotifySong() {
           console.log(data.tracks.items[0].album.name);
           //external url
           console.log(data.tracks.items[0].external_urls.spotify);
-          
+          //write to log file 
           fs.appendFile("log.txt","\n" +data.tracks.items[0].artists[0].name + "\n" +data.tracks.items[0].name + "\n" +data.tracks.items[0].album.name + "\n"  +data.tracks.items[0].external_urls.spotify + "\n" , "utf8", function(err) {
             if (err) {
               return console.log(err);
             }
-                  
           }); 
-
-
         });
-      }); //this is the end ot the inquier ".then"
-}
+      }); 
+    }
 function movieThis() {
     inquirer
       .prompt([
@@ -151,27 +134,24 @@ function movieThis() {
         }
       ])
       .then(function(inquirerResponse) {
-        if (!inquirerResponse.moviename) {
-        //  console.log("inquire response :  "+inquirerResponse.moviename);
-          movieRes= "Mr Nobody";
-        //  console.log (movieRes);
+         console.log("inquire response :  "+inquirerResponse.moviename);
+        if (inquirerResponse.moviename == "") {
+          console.log("no movie selected")
+          var movieRes = "Mr Nobody";
+        } else {
+          var movieRes = inquirerResponse.moviename;
         }
-        var movieRes = inquirerResponse.moviename;
-        // var movieName = "";
-        
-        // var movieName = movieRes.split();
-        // Then run a request to the OMDB API with the movie specified
+      // Then run a request to the OMDB API 
         var queryUrl =
           "http://www.omdbapi.com/?t=" +
           movieRes +
           "&y=&plot=short&apikey=trilogy";
-        //debug url 
         // console.log(queryUrl);
         request(queryUrl, function(error, response, body) {
-      //  console.log(body);
+          //  console.log(body);
           // If the request is successful
           if (!error && response.statusCode === 200) {
-            // Parse the body of the site and recover just the imdbRating
+            // Parse the body 
             console.log("Release Year: " + JSON.parse(body).Year);
             console.log("Title: " + JSON.parse(body).Title);
             console.log("IMDB Rating of this movie: " + JSON.parse(body).Rated);
@@ -180,7 +160,7 @@ function movieThis() {
             console.log("Language of the movie: " + JSON.parse(body).Language);
             console.log("Plot " + JSON.parse(body).Plot);
             console.log("Actors in the movie: " + JSON.parse(body).Actors);
-                      
+            //write to file
           fs.appendFile("log.txt",
             "\n" +"Release Year: " + JSON.parse(body).Year +
             "\n" +"Title: " + JSON.parse(body).Title +
@@ -194,37 +174,21 @@ function movieThis() {
             if (err) {
               return console.log(err);
             }
-                  
-          }); 
-
-
+         }); 
           }
-            
         });
-      }); //this is the end ot the inquier ".then"
+      }); 
 }
-
 function doWhat() {
   if ((action = "do-what-it-says")) {
-    // console.log("you are in the doWhat function")
     fs.readFile("./random.txt", "utf8", function(error, data) {
       if (error) {
         return console.log(error);
       }
-      //  split it by commas
-      var dataArray = data.split(",");
+     var dataArray = data.split(",");
       //get data from array
-      // console.log(dataArray);
       if ((dataArray[0] = "spotify-this-song")) {
-        //keys replace with call to file
-        var spotify = new Spotify({
-          id: "32bf67364ca74add92adac229ad286a3",
-          secret: "f7e36e90658b48d4bc74ac7838ba29a9"
-        });
-        spotify.search({ type: "track", query: dataArray[1] }, function(
-          err,
-          data
-        ) {
+          spotify.search({ type: "track", query: dataArray[1] }, function(err,data) {
           if (err) {
             return console.log("Error occurred: " + err);
             return;
@@ -237,10 +201,14 @@ function doWhat() {
           console.log(data.tracks.items[0].album.name);
           //external url
           console.log(data.tracks.items[0].external_urls.spotify);
+                    //write to log file 
+                    fs.appendFile("log.txt","\n" +data.tracks.items[0].artists[0].name + "\n" +data.tracks.items[0].name + "\n" +data.tracks.items[0].album.name + "\n"  +data.tracks.items[0].external_urls.spotify + "\n" , "utf8", function(err) {
+                      if (err) {
+                        return console.log(err);
+                      }
+                    }); 
         });
       }
     });
-
-    //******end of the very first do what if if  */
   }
 }
