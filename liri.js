@@ -156,24 +156,17 @@ function movieThis() {
       }
     ])
     .then(function(inquirerResponse) {
-      //  console.log("inquire response :  "+inquirerResponse.moviename);
       if (inquirerResponse.moviename == "") {
-        // console.log("no movie selected")
         var movieRes = "Mr Nobody";
       } else {
         var movieRes = inquirerResponse.moviename;
       }
-      // Then run a request to the OMDB API
       let queryUrl =
         "http://www.omdbapi.com/?t=" +
         movieRes +
         "&y=&plot=short&apikey=trilogy";
-      // console.log(queryUrl);
       request(queryUrl, function(error, response, body) {
-        //  console.log(body);
-        // If the request is successful
         if (!error && response.statusCode === 200) {
-          // Parse the body
           console.log("Release Year: " + JSON.parse(body).Year);
           console.log("Title: " + JSON.parse(body).Title);
           console.log("IMDB Rating of this movie: " + JSON.parse(body).Rated);
@@ -184,7 +177,6 @@ function movieThis() {
           console.log("Language of the movie: " + JSON.parse(body).Language);
           console.log("Plot " + JSON.parse(body).Plot);
           console.log("Actors in the movie: " + JSON.parse(body).Actors);
-          //write to file
           fs.appendFile(
             "log.txt",
             "\n" +
@@ -230,7 +222,6 @@ function doWhat() {
         return console.log(error);
       }
       let dataArray = data.split(",");
-      //get data from array
       if ((dataArray[0] = "spotify-this-song")) {
         spotify.search({ type: "track", query: dataArray[1] }, function(
           err,
@@ -240,15 +231,10 @@ function doWhat() {
             return console.log("Error occurred: " + err);
             return;
           }
-          //artist name
           console.log(data.tracks.items[0].artists[0].name);
-          //song name
           console.log(data.tracks.items[0].name);
-          //album name
           console.log(data.tracks.items[0].album.name);
-          //external url
           console.log(data.tracks.items[0].external_urls.spotify);
-          //write to log file
           fs.appendFile(
             "log.txt",
             "\n" +
